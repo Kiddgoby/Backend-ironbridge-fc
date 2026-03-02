@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\GameRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: GameRepository::class)]
+class Game
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $opponent_name = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $opponent_logo_url = null;
+
+    #[ORM\Column]
+    private ?bool $is_home = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $scheduled_at = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $result = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $competition = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getOpponentName(): ?string
+    {
+        return $this->opponent_name;
+    }
+
+    public function setOpponentName(string $opponent_name): static
+    {
+        $this->opponent_name = $opponent_name;
+
+        return $this;
+    }
+
+    public function getOpponentLogoUrl(): ?string
+    {
+        return $this->opponent_logo_url;
+    }
+
+    public function setOpponentLogoUrl(string $opponent_logo_url): static
+    {
+        $this->opponent_logo_url = $opponent_logo_url;
+
+        return $this;
+    }
+
+    public function isIsHome(): ?bool
+    {
+        return $this->is_home;
+    }
+
+    public function setIsHome(bool $is_home): static
+    {
+        $this->is_home = $is_home;
+
+        return $this;
+    }
+
+    public function getScheduledAt(): ?\DateTimeInterface
+    {
+        return $this->scheduled_at;
+    }
+
+    public function setScheduledAt(\DateTimeInterface $scheduled_at): static
+    {
+        $this->scheduled_at = $scheduled_at;
+
+        return $this;
+    }
+
+    public function getResult(): ?string
+    {
+        return $this->result;
+    }
+
+    public function setResult(?string $result): static
+    {
+        $this->result = $result;
+
+        return $this;
+    }
+
+    public function getCompetition(): ?string
+    {
+        return $this->competition;
+    }
+
+    public function setCompetition(string $competition): static
+    {
+        $this->competition = $competition;
+
+        return $this;
+    }
+}
