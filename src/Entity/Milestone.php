@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MilestoneRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MilestoneRepository::class)]
 class Milestone
@@ -12,18 +13,23 @@ class Milestone
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['milestone:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['milestone:read'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['milestone:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['milestone:read'])]
     private ?\DateTimeInterface $achieved_at = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['milestone:read'])]
     private ?string $image_url = null;
 
     public function getId(): ?int
