@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\PlayerRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PlayerRepository::class)]
 class Player
@@ -12,42 +13,55 @@ class Player
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['player:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['player:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['player:read'])]
     private ?string $surname = null;
 
     #[ORM\Column]
+    #[Groups(['player:read'])]
     private ?int $number = null;
 
     #[ORM\Column(length: 10)]
+    #[Groups(['player:read'])]
     private ?string $position = null;
 
     #[ORM\Column]
+    #[Groups(['player:read'])]
     private ?int $overall_rating = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['player:read'])]
     private ?\DateTimeInterface $joined_at = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['player:read'])]
     private ?\DateTimeInterface $left_at = null;
 
     #[ORM\Column]
+    #[Groups(['player:read'])]
     private ?bool $is_legend = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['player:read'])]
     private ?string $image_url = null;
 
     #[ORM\Column]
+    #[Groups(['player:read'])]
     private ?int $matches_played = 0;
 
     #[ORM\Column]
+    #[Groups(['player:read'])]
     private ?int $goals = 0;
 
     #[ORM\Column]
+    #[Groups(['player:read'])]
     private ?int $assists = 0;
 
     public function getId(): ?int

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\GameRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: GameRepository::class)]
 class Game
@@ -12,24 +13,31 @@ class Game
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['game:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['game:read'])]
     private ?string $opponent_name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['game:read'])]
     private ?string $opponent_logo_url = null;
 
     #[ORM\Column]
+    #[Groups(['game:read'])]
     private ?bool $is_home = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['game:read'])]
     private ?\DateTimeInterface $scheduled_at = null;
 
     #[ORM\Column(length: 10, nullable: true)]
+    #[Groups(['game:read'])]
     private ?string $result = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['game:read'])]
     private ?string $competition = null;
 
     public function getId(): ?int
