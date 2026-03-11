@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/api/games')]
 final class GameController extends AbstractController
@@ -18,7 +19,8 @@ final class GameController extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private GameRepository $gameRepository,
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
+        private ValidatorInterface $validator
     ) {}
 
 
@@ -53,6 +55,11 @@ final class GameController extends AbstractController
         try {
             $game = $this->serializer->deserialize($request->getContent(), Game::class, 'json');
             
+            $errors = $this->validator->validate($game);
+            if (count($errors) > 0) {
+                return new JsonResponse($this->serializer->serialize($errors, 'json'), Response::HTTP_BAD_REQUEST, [], true);
+            }
+
             $this->entityManager->persist($game);
             $this->entityManager->flush();
 
@@ -60,7 +67,7 @@ final class GameController extends AbstractController
 
             return new JsonResponse($json, Response::HTTP_CREATED, [], true);
         } catch (\Exception $e) {
-            return new JsonResponse(['error' => 'Invalid data'], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => 'Invalid data format'], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -82,11 +89,16 @@ final class GameController extends AbstractController
                 ['object_to_populate' => $game]
             );
 
+            $errors = $this->validator->validate($game);
+            if (count($errors) > 0) {
+                return new JsonResponse($this->serializer->serialize($errors, 'json'), Response::HTTP_BAD_REQUEST, [], true);
+            }
+
             $this->entityManager->flush();
 
             return new JsonResponse(null, Response::HTTP_NO_CONTENT);
         } catch (\Exception $e) {
-            return new JsonResponse(['error' => 'Invalid data'], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => 'Invalid data format'], Response::HTTP_BAD_REQUEST);
         }
     }
 

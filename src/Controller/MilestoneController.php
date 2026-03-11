@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/api/milestones')]
 final class MilestoneController extends AbstractController
@@ -18,7 +19,8 @@ final class MilestoneController extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private MilestoneRepository $milestoneRepository,
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
+        private ValidatorInterface $validator
     ) {}
 
 
@@ -53,6 +55,11 @@ final class MilestoneController extends AbstractController
         try {
             $milestone = $this->serializer->deserialize($request->getContent(), Milestone::class, 'json');
             
+            $errors = $this->validator->validate($milestone);
+            if (count($errors) > 0) {
+                return new JsonResponse($this->serializer->serialize($errors, 'json'), Response::HTTP_BAD_REQUEST, [], true);
+            }
+
             $this->entityManager->persist($milestone);
             $this->entityManager->flush();
 
@@ -60,7 +67,7 @@ final class MilestoneController extends AbstractController
 
             return new JsonResponse($json, Response::HTTP_CREATED, [], true);
         } catch (\Exception $e) {
-            return new JsonResponse(['error' => 'Invalid data'], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => 'Invalid data format'], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -82,11 +89,16 @@ final class MilestoneController extends AbstractController
                 ['object_to_populate' => $milestone]
             );
 
+            $errors = $this->validator->validate($milestone);
+            if (count($errors) > 0) {
+                return new JsonResponse($this->serializer->serialize($errors, 'json'), Response::HTTP_BAD_REQUEST, [], true);
+            }
+
             $this->entityManager->flush();
 
             return new JsonResponse(null, Response::HTTP_NO_CONTENT);
         } catch (\Exception $e) {
-            return new JsonResponse(['error' => 'Invalid data'], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => 'Invalid data format'], Response::HTTP_BAD_REQUEST);
         }
     }
 
