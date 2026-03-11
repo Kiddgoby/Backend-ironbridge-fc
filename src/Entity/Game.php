@@ -6,6 +6,7 @@ use App\Repository\GameRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GameRepository::class)]
 class Game
@@ -16,27 +17,31 @@ class Game
     #[Groups(['game:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 255)]
     #[Groups(['game:read'])]
     private ?string $opponent_name = null;
 
-    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Url]
     #[Groups(['game:read'])]
     private ?string $opponent_logo_url = null;
 
-    #[ORM\Column]
+    #[Assert\Type('bool')]
     #[Groups(['game:read'])]
     private ?bool $is_home = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank]
+    #[Assert\Type(\DateTimeInterface::class)]
     #[Groups(['game:read'])]
     private ?\DateTimeInterface $scheduled_at = null;
 
-    #[ORM\Column(length: 10, nullable: true)]
+    #[Assert\Length(max: 10)]
     #[Groups(['game:read'])]
     private ?string $result = null;
 
-    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 255)]
     #[Groups(['game:read'])]
     private ?string $competition = null;
 
