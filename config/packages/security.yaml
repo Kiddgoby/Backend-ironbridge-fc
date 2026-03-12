@@ -19,7 +19,7 @@ security:
             # jwt: ~
 
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/api, roles: PUBLIC_ACCESS }
 
 when@test:
     security:
