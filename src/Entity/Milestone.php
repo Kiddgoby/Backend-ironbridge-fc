@@ -17,21 +17,25 @@ class Milestone
     #[Groups(['milestone:read'])]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 255)]
     #[Groups(['milestone:read'])]
     private ?string $title = null;
 
+    #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 10)]
     #[Groups(['milestone:read'])]
     private ?string $description = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotBlank]
     #[Assert\Type(\DateTimeInterface::class)]
     #[Groups(['milestone:read'])]
     private ?\DateTimeInterface $achieved_at = null;
 
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\Url]
     #[Groups(['milestone:read'])]

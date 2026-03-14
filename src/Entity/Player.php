@@ -17,21 +17,25 @@ class Player
     #[Groups(['player:read'])]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 255)]
     #[Groups(['player:read'])]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 255)]
     #[Groups(['player:read'])]
     private ?string $surname = null;
 
+    #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\PositiveOrZero]
     #[Groups(['player:read'])]
     private ?int $number = null;
 
+    #[ORM\Column(length: 10)]
     #[Assert\NotBlank]
     // las posiciones son en español son asi en este orden
     // POR, DF, CAI, CAD, MC, MCD, MCO, MD, MI, EI, DC, ED
@@ -39,11 +43,13 @@ class Player
     #[Groups(['player:read'])]
     private ?string $position = null;
 
+    #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\Range(min: 0, max: 99)]
     #[Groups(['player:read'])]
     private ?int $overall_rating = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotBlank]
     #[Assert\Type(\DateTimeInterface::class)]
     #[Groups(['player:read'])]
@@ -53,23 +59,28 @@ class Player
     #[Groups(['player:read'])]
     private ?\DateTimeInterface $left_at = null;
 
+    #[ORM\Column]
     #[Assert\Type('bool')]
     #[Groups(['player:read'])]
     private ?bool $is_legend = null;
 
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\Url]
     #[Groups(['player:read'])]
     private ?string $image_url = null;
 
+    #[ORM\Column]
     #[Assert\PositiveOrZero]
     #[Groups(['player:read'])]
     private ?int $matches_played = 0;
 
+    #[ORM\Column]
     #[Assert\PositiveOrZero]
     #[Groups(['player:read'])]
     private ?int $goals = 0;
 
+    #[ORM\Column]
     #[Assert\PositiveOrZero]
     #[Groups(['player:read'])]
     private ?int $assists = 0;
